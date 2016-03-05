@@ -4,7 +4,7 @@ import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Function;
 
-public class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
+final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
     private final WeightBalancedTree<T> tree;
 
     private WeightBalancedTreeSet(WeightBalancedTree<T> tree) {

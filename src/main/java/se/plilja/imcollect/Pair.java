@@ -1,6 +1,6 @@
 package se.plilja.imcollect;
 
-class Pair<A, B> {
+final class Pair<A, B> {
     public final A first;
     public final B second;
 

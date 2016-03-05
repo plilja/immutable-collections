@@ -3,7 +3,7 @@ package se.plilja.imcollect;
 import java.util.Comparator;
 import java.util.Optional;
 
-class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
+final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
     private final WeightBalancedTree<Pair<K, V>> tree;
 
     private WeightBalancedTreeMap(WeightBalancedTree<Pair<K, V>> tree) {
