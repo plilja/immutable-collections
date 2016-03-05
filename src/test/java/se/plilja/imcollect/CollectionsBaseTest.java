@@ -17,6 +17,9 @@ import static org.junit.Assert.*;
 public abstract class CollectionsBaseTest {
     private final ImmutableCollection<Integer> empty;
 
+    // TODO: 05/03/16 Verify immutable
+    // TODO: 05/03/16 null-tests
+
     public CollectionsBaseTest(ImmutableCollection<Integer> empty) {
         this.empty = empty;
     }
