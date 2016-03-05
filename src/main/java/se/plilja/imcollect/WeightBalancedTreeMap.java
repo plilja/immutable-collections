@@ -1,6 +1,7 @@
 package se.plilja.imcollect;
 
 import java.util.Comparator;
+import java.util.Map;
 import java.util.Optional;
 
 final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
@@ -22,6 +23,16 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
     @Override
     public WeightBalancedTreeMap<K, V> put(K key, V value) {
         return new WeightBalancedTreeMap<>(tree.add(Pair.make(key, value)));
+    }
+
+    @Override
+    public WeightBalancedTreeMap<K, V> putAll(Map<K, V> map) {
+        return (WeightBalancedTreeMap<K, V>) ImmutableMap.super.putAll(map);
+    }
+
+    @Override
+    public WeightBalancedTreeMap<K, V> putAll(ImmutableMap<K, V> map) {
+        return (WeightBalancedTreeMap<K, V>) ImmutableMap.super.putAll(map);
     }
 
     @Override
