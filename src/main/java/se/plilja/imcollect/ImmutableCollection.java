@@ -25,7 +25,7 @@ public interface ImmutableCollection<T> extends Iterable<T> {
         return size() == 0;
     }
 
-    int size();
+    long size();
 
     boolean contains(T val);
 

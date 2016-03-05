@@ -58,7 +58,7 @@ final class ReversedImmutableList<T> implements ImmutableCollection<T> {
     }
 
     @Override
-    public int size() {
+    public long size() {
         int r = 0;
         for (T foo : this) {
             r++;

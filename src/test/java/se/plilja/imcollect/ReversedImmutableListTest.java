@@ -3,7 +3,6 @@ package se.plilja.imcollect;
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
 import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.*;
@@ -12,33 +11,12 @@ import java.util.stream.Stream;
 import static org.junit.Assert.assertEquals;
 
 @RunWith(JUnitQuickcheck.class)
-public class ReversedImmutableListTest {
+public class ReversedImmutableListTest extends CollectionsBaseTest {
 
-    @Test
-    public void isEmpty() {
-        ImmutableCollection<Integer> objects = new NaiveImpl<>();
-        System.out.println(objects.size());
-        ImmutableCollection<Integer> objects2 = objects.add(1);
-        System.out.println(objects2);
-        System.out.println(objects2.contains(1));
-        System.out.println(objects2.containsAll(Arrays.asList(1, 2, 3)));
-        System.out.println(objects2.containsAll(Arrays.asList(1)));
-        System.out.println(objects2.containsAll(Arrays.asList(2, 3)));
-        System.out.println(objects2.isEmpty());
-        System.out.println(objects.isEmpty());
-
+    public ReversedImmutableListTest() {
+        super(new ReversedImmutableList<>());
     }
 
-    @Test
-    public void remove() {
-        ImmutableCollection<Integer> target = new ReversedImmutableList<>();
-        target = target.add(5);
-        target = target.add(5);
-        target = target.add(85);
-        target = target.removeAll(Arrays.asList(5));
-        System.out.println(target.toMutableCollection());
-
-    }
 
     @Property(trials = 1000)
     public void compareWithReferenceImplementation(List<CollectionOperation> operations,
@@ -141,7 +119,7 @@ public class ReversedImmutableListTest {
         }
 
         @Override
-        public int size() {
+        public long size() {
             return list.size();
         }
 

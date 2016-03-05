@@ -55,23 +55,23 @@ final class WeightBalancedTree<K> {
         return Integer.signum(comp.compare(k1, k2));
     }
 
-    public WeightBalancedTree<K> put(K key) {
-        Node<K> newRoot = put(root, key);
+    public WeightBalancedTree<K> add(K key) {
+        Node<K> newRoot = add(root, key);
         return new WeightBalancedTree<>(newRoot, comp);
     }
 
-    private Node<K> put(Node<K> node, K key) {
+    private Node<K> add(Node<K> node, K key) {
         if (node == null) {
             return new Node<>(key, null, null, 1);
         } else {
             switch (compare(key, node.key)) {
                 case LT:
-                    Node<K> newLeft = put(node.left, key);
+                    Node<K> newLeft = add(node.left, key);
                     return balance(node(node.key, newLeft, node.right));
                 case EQ:
                     return node(key, node.left, node.right);
                 case GT:
-                    Node<K> newRight = put(node.right, key);
+                    Node<K> newRight = add(node.right, key);
                     return balance(node(node.key, node.left, newRight));
                 default:
                     throw new IllegalStateException();
@@ -199,8 +199,8 @@ final class WeightBalancedTree<K> {
         }
     }
 
-    public Iterable<K> keys() {
-        return () -> new WeightBalancedTreeIterator<K>(root, node -> node.key);
+    public Iterator<K> iterator() {
+        return new WeightBalancedTreeIterator<K>(root, node -> node.key);
     }
 
     public long size() {

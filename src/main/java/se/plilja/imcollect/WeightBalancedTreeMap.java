@@ -21,7 +21,7 @@ class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
 
     @Override
     public WeightBalancedTreeMap<K, V> put(K key, V value) {
-        return new WeightBalancedTreeMap<>(tree.put(Pair.make(key, value)));
+        return new WeightBalancedTreeMap<>(tree.add(Pair.make(key, value)));
     }
 
     @Override
