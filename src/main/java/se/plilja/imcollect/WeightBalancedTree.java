@@ -6,7 +6,7 @@ import java.util.Optional;
 import java.util.Stack;
 import java.util.function.Function;
 
-final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
+final class WeightBalancedTree<K> {
     private static final double OMEGA = 2.5;
     private static final double ALPHA = 1.5;
     private static final double DELTA = 1;
@@ -14,16 +14,19 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
     private static final int EQ = 0;
     private static final int GT = 1;
 
-    private final Node<K, V> root;
+    private final Node<K> root;
     private final Comparator<K> comp;
 
-    public WeightBalancedTree(Node<K, V> root, Comparator<K> comparator) {
+    private WeightBalancedTree(Node<K> root, Comparator<K> comparator) {
         this.root = root;
         this.comp = comparator;
     }
 
-    @Override
-    public Optional<V> lookup(K key) {
+    public WeightBalancedTree(Comparator<K> comparator) {
+        this(null, comparator);
+    }
+
+    public Optional<K> lookup(K key) {
         if (key == null) {
             return Optional.empty();
         } else {
@@ -31,7 +34,7 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
         }
     }
 
-    public Optional<V> lookup(Node<K, V> node, K key) {
+    public Optional<K> lookup(Node<K> node, K key) {
         if (node == null) {
             return Optional.empty();
         } else {
@@ -39,7 +42,7 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
                 case LT:
                     return lookup(node.left, key);
                 case EQ:
-                    return Optional.of(node.value);
+                    return Optional.of(node.key);
                 case GT:
                     return lookup(node.right, key);
                 default:
@@ -52,32 +55,31 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
         return Integer.signum(comp.compare(k1, k2));
     }
 
-    @Override
-    public WeightBalancedTree<K, V> put(K key, V value) {
-        Node<K, V> newRoot = put(root, key, value);
+    public WeightBalancedTree<K> put(K key) {
+        Node<K> newRoot = put(root, key);
         return new WeightBalancedTree<>(newRoot, comp);
     }
 
-    private Node<K, V> put(Node<K, V> node, K key, V value) {
+    private Node<K> put(Node<K> node, K key) {
         if (node == null) {
-            return new Node<>(key, value, null, null, 1);
+            return new Node<>(key, null, null, 1);
         } else {
             switch (compare(key, node.key)) {
                 case LT:
-                    Node<K, V> newLeft = put(node.left, key, value);
-                    return balance(node(node.key, node.value, newLeft, node.right));
+                    Node<K> newLeft = put(node.left, key);
+                    return balance(node(node.key, newLeft, node.right));
                 case EQ:
-                    return node(key, value, node.left, node.right);
+                    return node(key, node.left, node.right);
                 case GT:
-                    Node<K, V> newRight = put(node.right, key, value);
-                    return balance(node(node.key, node.value, node.left, newRight));
+                    Node<K> newRight = put(node.right, key);
+                    return balance(node(node.key, node.left, newRight));
                 default:
                     throw new IllegalStateException();
             }
         }
     }
 
-    private Node<K, V> balance(Node<K, V> node) {
+    private Node<K> balance(Node<K> node) {
         if (nodeSize(node) <= 2) {
             return node;
         } else if (nodeSize(node.right) > OMEGA * nodeSize(node.left) + DELTA) {
@@ -97,7 +99,7 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
         }
     }
 
-    private long nodeSize(Node<K, V> node) {
+    private long nodeSize(Node<K> node) {
         if (node == null) {
             return 0;
         } else {
@@ -105,115 +107,107 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
         }
     }
 
-    private Node<K, V> doubleRight(Node<K, V> node) {
-        Node<K, V> L = node.left;
-        Node<K, V> R = node.right;
-        Node<K, V> LR = L.right;
-        return node(LR.left.key, LR.left.value,
-                node(L.key, L.value, L.left, LR.left),
-                node(node.key, node.value, LR.right, R));
+    private Node<K> doubleRight(Node<K> node) {
+        Node<K> L = node.left;
+        Node<K> R = node.right;
+        Node<K> LR = L.right;
+        return node(LR.left.key,
+                node(L.key, L.left, LR.left),
+                node(node.key, LR.right, R));
     }
 
-    private Node<K, V> singleRight(Node<K, V> node) {
-        Node<K, V> L = node.left;
-        Node<K, V> R = node.right;
-        Node<K, V> newR = node(node.key, node.value, L.right, R);
-        return node(L.key, L.value, L.left, newR);
+    private Node<K> singleRight(Node<K> node) {
+        Node<K> L = node.left;
+        Node<K> R = node.right;
+        Node<K> newR = node(node.key, L.right, R);
+        return node(L.key, L.left, newR);
     }
 
-    private Node<K, V> doubleLeft(Node<K, V> node) {
-        Node<K, V> L = node.left;
-        Node<K, V> R = node.right;
-        Node<K, V> RL = R.left;
-        return node(RL.left.key, RL.left.value,
-                node(node.key, node.value, L, RL.left),
-                node(R.key, R.value, RL.right, R.right));
+    private Node<K> doubleLeft(Node<K> node) {
+        Node<K> L = node.left;
+        Node<K> R = node.right;
+        Node<K> RL = R.left;
+        return node(RL.left.key,
+                node(node.key, L, RL.left),
+                node(R.key, RL.right, R.right));
     }
 
-    private Node<K, V> singleLeft(Node<K, V> node) {
-        Node<K, V> left = node.left;
-        Node<K, V> right = node.right;
-        Node<K, V> newLeft = node(node.key, node.value, left, right.left);
-        return node(right.key, right.value, newLeft, right.right);
+    private Node<K> singleLeft(Node<K> node) {
+        Node<K> left = node.left;
+        Node<K> right = node.right;
+        Node<K> newLeft = node(node.key, left, right.left);
+        return node(right.key, newLeft, right.right);
     }
 
-    @Override
-    public ImmutableMap<K, V> remove(K key) {
-        Node<K, V> newRoot = remove(root, key);
+    public WeightBalancedTree<K> remove(K key) {
+        Node<K> newRoot = remove(root, key);
         return new WeightBalancedTree<>(newRoot, comp);
     }
 
-    private Node<K, V> remove(Node<K, V> node, K key) {
+    private Node<K> remove(Node<K> node, K key) {
         if (node == null) {
             return null;
         } else {
             switch (compare(key, node.key)) {
                 case LT:
-                    Node<K, V> newLeft = remove(node.left, key);
-                    return balance(node(node.key, node.value, newLeft, node.right));
+                    Node<K> newLeft = remove(node.left, key);
+                    return balance(node(node.key, newLeft, node.right));
                 case EQ:
                     return concat(node.left, node.right);
                 case GT:
-                    Node<K, V> newRight = remove(node.right, key);
-                    return balance(node(node.key, node.value, node.left, newRight));
+                    Node<K> newRight = remove(node.right, key);
+                    return balance(node(node.key, node.left, newRight));
                 default:
                     throw new IllegalStateException();
             }
         }
     }
 
-    private Node<K, V> concat(Node<K, V> left, Node<K, V> right) {
+    private Node<K> concat(Node<K> left, Node<K> right) {
         if (right == null) {
             return left;
         } else if (left == null) {
             return right;
         } else if (nodeSize(left) > nodeSize(right)) {
-            Pair<Pair<K, V>, Node<K, V>> r = popMax(left);
-            Pair<K, V> m = r.first;
-            Node<K, V> newLeft = r.second;
-            return node(m.first, m.second, newLeft, right);
+            Pair<K, Node<K>> r = popMax(left);
+            K m = r.first;
+            Node<K> newLeft = r.second;
+            return node(m, newLeft, right);
         } else {
-            Pair<Pair<K, V>, Node<K, V>> r = popMin(right);
-            Pair<K, V> m = r.first;
-            Node<K, V> newRight = r.second;
-            return node(m.first, m.second, left, newRight);
+            Pair<K, Node<K>> r = popMin(right);
+            K m = r.first;
+            Node<K> newRight = r.second;
+            return node(m, left, newRight);
         }
     }
 
-    private Pair<Pair<K, V>, Node<K, V>> popMin(Node<K, V> node) {
+    private Pair<K, Node<K>> popMin(Node<K> node) {
         if (node.left == null) {
-            return Pair.make(Pair.make(node.key, node.value), node.right);
+            return Pair.make(node.key, node.right);
         } else {
-            Pair<Pair<K, V>, Node<K, V>> r = popMin(node.left);
-            return Pair.make(r.first, balance(node(node.key, node.value, r.second.left, node.right)));
+            Pair<K, Node<K>> r = popMin(node.left);
+            return Pair.make(r.first, balance(node(node.key, r.second.left, node.right)));
         }
     }
 
-    private Pair<Pair<K, V>, Node<K, V>> popMax(Node<K, V> node) {
+    private Pair<K, Node<K>> popMax(Node<K> node) {
         if (node.right == null) {
-            return Pair.make(Pair.make(node.key, node.value), node.left);
+            return Pair.make(node.key, node.left);
         } else {
-            Pair<Pair<K, V>, Node<K, V>> r = popMax(node.right);
-            return Pair.make(r.first, balance(node(node.key, node.value, node.left, r.second.right)));
+            Pair<K, Node<K>> r = popMax(node.right);
+            return Pair.make(r.first, balance(node(node.key, node.left, r.second.right)));
         }
     }
 
-    @Override
     public Iterable<K> keys() {
         return () -> new WeightBalancedTreeIterator<K>(root, node -> node.key);
     }
 
-    @Override
-    public Iterable<V> values() {
-        return () -> new WeightBalancedTreeIterator<V>(root, node -> node.value);
-    }
-
-    @Override
     public long size() {
-        return root.size;
+        return nodeSize(root);
     }
 
-    private Node<K, V> node(K key, V value, Node<K, V> left, Node<K, V> right) {
+    private Node<K> node(K key, Node<K> left, Node<K> right) {
         int n = 1;
         if (left != null) {
             n += nodeSize(left);
@@ -221,19 +215,17 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
         if (right != null) {
             n += nodeSize(right);
         }
-        return new Node<>(key, value, left, right, n);
+        return new Node<>(key, left, right, n);
     }
 
-    private class Node<K, V> {
+    private class Node<K> {
         final K key;
-        final V value;
-        final Node<K, V> left;
-        final Node<K, V> right;
+        final Node<K> left;
+        final Node<K> right;
         final long size;
 
-        private Node(K key, V value, Node<K, V> left, Node<K, V> right, long size) {
+        private Node(K key, Node<K> left, Node<K> right, long size) {
             this.key = key;
-            this.value = value;
             this.left = left;
             this.right = right;
             this.size = size;
@@ -241,11 +233,11 @@ final class WeightBalancedTree<K, V> implements ImmutableMap<K, V> {
     }
 
     private class WeightBalancedTreeIterator<T> implements Iterator<T> {
-        private Stack<Node<K, V>> s;
+        private Stack<Node<K>> s;
         private T next;
-        private Function<Node<K, V>, T> f;
+        private Function<Node<K>, T> f;
 
-        public WeightBalancedTreeIterator(Node<K, V> root, Function<Node<K, V>, T> f) {
+        public WeightBalancedTreeIterator(Node<K> root, Function<Node<K>, T> f) {
             this.f = f;
             s.push(root);
             next = extractNext();

@@ -8,13 +8,13 @@ import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
-public class WeightBalancedTreeTest {
+public class WeightBalancedTreeMapTest {
 
     private Random rand = new Random();
 
     @Test
     public void testLookup() {
-        WeightBalancedTree<Integer, String> target = new WeightBalancedTree<>(null, (a, b) -> a - b);
+        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
 
         // when
         for (int i = 0; i < 1000; i++) {
@@ -29,7 +29,7 @@ public class WeightBalancedTreeTest {
 
     @Test
     public void testContains() {
-        WeightBalancedTree<Integer, String> target = new WeightBalancedTree<>(null, (a, b) -> a - b);
+        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
 
         // when
         for (int i = 0; i < 1000; i++) {
@@ -47,7 +47,7 @@ public class WeightBalancedTreeTest {
 
     @Test
     public void stressTest() {
-        WeightBalancedTree<Integer, String> target = new WeightBalancedTree<>(null, (a, b) -> a - b);
+        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
 
         for (int i = 50000; i < 100000; i++) {
             target = target.put(i, String.format("foo %d", i));
@@ -73,7 +73,7 @@ public class WeightBalancedTreeTest {
 
     @Test
     public void iterateValuesTest() {
-        WeightBalancedTree<Integer, Integer> target = new WeightBalancedTree<>(null, (a, b) -> a - b);
+        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
         TreeMap<Integer, Integer> reference = new TreeMap<>();
 
         for (int i = 0; i < 1000; i++) {
