@@ -111,7 +111,7 @@ final class WeightBalancedTree<K> {
         Node<K> L = node.left;
         Node<K> R = node.right;
         Node<K> LR = L.right;
-        return node(LR.left.key,
+        return node(LR.key,
                 node(L.key, L.left, LR.left),
                 node(node.key, LR.right, R));
     }
@@ -127,7 +127,7 @@ final class WeightBalancedTree<K> {
         Node<K> L = node.left;
         Node<K> R = node.right;
         Node<K> RL = R.left;
-        return node(RL.left.key,
+        return node(RL.key,
                 node(node.key, L, RL.left),
                 node(R.key, RL.right, R.right));
     }
@@ -186,7 +186,7 @@ final class WeightBalancedTree<K> {
             return Pair.make(node.key, node.right);
         } else {
             Pair<K, Node<K>> r = popMin(node.left);
-            return Pair.make(r.first, balance(node(node.key, r.second.left, node.right)));
+            return Pair.make(r.first, balance(node(node.key, r.second, node.right)));
         }
     }
 
@@ -195,7 +195,7 @@ final class WeightBalancedTree<K> {
             return Pair.make(node.key, node.left);
         } else {
             Pair<K, Node<K>> r = popMax(node.right);
-            return Pair.make(r.first, balance(node(node.key, node.left, r.second.right)));
+            return Pair.make(r.first, balance(node(node.key, node.left, r.second)));
         }
     }
 
