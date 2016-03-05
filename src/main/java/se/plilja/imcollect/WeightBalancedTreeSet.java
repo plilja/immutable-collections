@@ -2,6 +2,7 @@ package se.plilja.imcollect;
 
 import java.util.Comparator;
 import java.util.Iterator;
+import java.util.function.Function;
 
 public class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
     private final WeightBalancedTree<T> tree;
@@ -36,6 +37,6 @@ public class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return tree.iterator();
+        return tree.iterator(Function.identity());
     }
 }

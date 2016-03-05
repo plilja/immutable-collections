@@ -1,9 +1,6 @@
 package se.plilja.imcollect;
 
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.Optional;
-import java.util.Stack;
+import java.util.*;
 import java.util.function.Function;
 
 final class WeightBalancedTree<K> {
@@ -199,8 +196,8 @@ final class WeightBalancedTree<K> {
         }
     }
 
-    public Iterator<K> iterator() {
-        return new WeightBalancedTreeIterator<K>(root, node -> node.key);
+    public <T> Iterator<T> iterator(Function<K, T> mapping) {
+        return new WeightBalancedTreeIterator<T>(root, mapping);
     }
 
     public long size() {
@@ -233,13 +230,14 @@ final class WeightBalancedTree<K> {
     }
 
     private class WeightBalancedTreeIterator<T> implements Iterator<T> {
-        private Stack<Node<K>> s;
-        private T next;
-        private Function<Node<K>, T> f;
+        private Deque<Node<K>> stack;
+        private Node<K> next;
+        private Function<K, T> nodeMapper;
 
-        public WeightBalancedTreeIterator(Node<K> root, Function<Node<K>, T> f) {
-            this.f = f;
-            s.push(root);
+        public WeightBalancedTreeIterator(Node<K> root, Function<K, T> nodeMapper) {
+            this.nodeMapper = nodeMapper;
+            stack = new ArrayDeque<>();
+            goLeft(root);
             next = extractNext();
         }
 
@@ -250,15 +248,28 @@ final class WeightBalancedTree<K> {
 
         @Override
         public T next() {
-            T res = next;
+            Node<K> res = next;
             next = extractNext();
-            return res;
+            return nodeMapper.apply(res.key);
         }
 
-        private T extractNext() {
-            return null; //todo
+        private Node<K> extractNext() {
+            if (stack.isEmpty()) {
+                return null;
+            } else {
+                Node<K> p = stack.pop();
+                goLeft(p.right);
+                return p;
+            }
         }
 
+        private void goLeft(Node<K> node) {
+            Node<K> curr = node;
+            while (curr != null) {
+                stack.push(curr);
+                curr = curr.left;
+            }
+        }
     }
 
 

@@ -31,12 +31,12 @@ class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
 
     @Override
     public Iterable<K> keys() {
-        return null;
+        return () -> tree.iterator(p -> p.first);
     }
 
     @Override
     public Iterable<V> values() {
-        return null;
+        return () -> tree.iterator(p -> p.second);
     }
 
     @Override
