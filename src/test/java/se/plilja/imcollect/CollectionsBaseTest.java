@@ -14,7 +14,7 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
-public class CollectionsBaseTest {
+public abstract class CollectionsBaseTest {
     private final ImmutableCollection<Integer> empty;
 
     public CollectionsBaseTest(ImmutableCollection<Integer> empty) {
