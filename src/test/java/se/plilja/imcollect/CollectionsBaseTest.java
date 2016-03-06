@@ -62,6 +62,19 @@ public abstract class CollectionsBaseTest {
     }
 
     @Property
+    public void removeNonExistingElementShouldNotChangeSize(List<@InRange(minInt = -10, maxInt = 10) Integer> base, @InRange(minInt = -10, maxInt = 10) int toRemove) {
+        Assume.assumeFalse(base.contains(toRemove));
+
+        ImmutableCollection<Integer> target = empty.addAll(base);
+
+        // when
+        ImmutableCollection<Integer> result = target.remove(toRemove);
+
+        // then
+        assertEquals(target.size(), result.size());
+    }
+
+    @Property
     public void anAddedValueShouldBePresentInCollection(List<@InRange(minInt = -10, maxInt = 10) Integer> base, int newValue) {
         ImmutableCollection<Integer> target = empty.addAll(base);
 
@@ -137,4 +150,6 @@ public abstract class CollectionsBaseTest {
         // then
         assertEquals(asList(2, 6, 10, 14, 18), result);
     }
+
+
 }

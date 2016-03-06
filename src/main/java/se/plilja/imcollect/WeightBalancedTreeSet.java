@@ -39,4 +39,11 @@ final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
     public Iterator<T> iterator() {
         return tree.iterator(Function.identity());
     }
+
+    @Override
+    public WeightBalancedTreeSet<T> addAll(Iterable<? extends T> values) {
+        return (WeightBalancedTreeSet<T>) ImmutableSet.super.addAll(values);
+    }
+
+
 }

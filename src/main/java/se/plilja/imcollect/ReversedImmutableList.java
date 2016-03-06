@@ -67,6 +67,11 @@ final class ReversedImmutableList<T> implements ImmutableCollection<T> {
     }
 
     @Override
+    public ReversedImmutableList<T> addAll(Iterable<? extends T> values) {
+        return (ReversedImmutableList<T>) ImmutableCollection.super.addAll(values);
+    }
+
+    @Override
     public boolean contains(T val) {
         for (T t : this) {
             if (t.equals(val))

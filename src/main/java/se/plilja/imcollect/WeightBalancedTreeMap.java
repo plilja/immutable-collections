@@ -17,7 +17,11 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
 
     @Override
     public Optional<V> lookup(K key) {
-        return tree.lookup(Pair.make(key, null)).map(p -> p.second);
+        if (key == null) {
+            return Optional.empty();
+        } else {
+            return tree.lookup(Pair.make(key, null)).map(p -> p.second);
+        }
     }
 
     @Override

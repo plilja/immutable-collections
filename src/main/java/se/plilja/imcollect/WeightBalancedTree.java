@@ -204,6 +204,29 @@ final class WeightBalancedTree<K> {
         return nodeSize(root);
     }
 
+    /**
+     * Test method. Validates that the tree is consistent.
+     */
+    Pair<Boolean, String> isConsistent() {
+        return isConsistent(root);
+    }
+
+    private Pair<Boolean, String> isConsistent(Node<K> node) {
+        if (node == null) {
+            return Pair.make(true, "");
+        } else {
+            if (nodeSize(node) != nodeSize(node.left) + nodeSize(node.right) + 1) {
+                return Pair.make(false, "Node size not equal to size of node children");
+            }
+            if (nodeSize(node.left) > OMEGA * nodeSize(node.right) + DELTA || nodeSize(node.right) > OMEGA * nodeSize(node.left) + DELTA) {
+                return Pair.make(false, "Tree is not weight balanced");
+            }
+            Pair<Boolean, String> leftConsistent = isConsistent(node.left);
+            Pair<Boolean, String> rightConsistent = isConsistent(node.right);
+            return Pair.make(leftConsistent.first && rightConsistent.first, leftConsistent.second + rightConsistent.second);
+        }
+    }
+
     private Node<K> node(K key, Node<K> left, Node<K> right) {
         int n = 1;
         if (left != null) {

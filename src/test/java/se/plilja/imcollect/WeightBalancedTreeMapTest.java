@@ -201,5 +201,15 @@ public class WeightBalancedTreeMapTest {
         }
     }
 
+    @Property
+    public void lookupNullShouldAlwaysReturnEmpty(List<@InRange(minInt = -100, maxInt = 100) Integer> baseValues) {
+        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        for (int i : baseValues) {
+            target = target.put(i, i);
+        }
+
+        assertFalse(target.lookup(null).isPresent());
+        assertFalse(target.contains(null));
+    }
 
 }
