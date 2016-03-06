@@ -4,7 +4,7 @@ import java.util.Iterator;
 import java.util.Objects;
 
 // TODO: 06/03/16 Replace with finger trees
-public class MapBasedImmutableList<T> implements ImmutableList<T> {
+class MapBasedImmutableList<T> implements ImmutableList<T> {
     private final ImmutableMap<Long, T> map;
 
     public MapBasedImmutableList() {
