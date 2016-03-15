@@ -25,6 +25,7 @@ public interface ImmutableCollection<T> extends Iterable<T> {
         return size() == 0;
     }
 
+    // TODO: 06/03/16 Consider switching back to ints
     long size();
 
     boolean contains(T val);

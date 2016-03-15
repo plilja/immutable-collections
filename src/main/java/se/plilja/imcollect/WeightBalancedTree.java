@@ -228,13 +228,7 @@ final class WeightBalancedTree<K> {
     }
 
     private Node<K> node(K key, Node<K> left, Node<K> right) {
-        int n = 1;
-        if (left != null) {
-            n += nodeSize(left);
-        }
-        if (right != null) {
-            n += nodeSize(right);
-        }
+        long n = nodeSize(left) + nodeSize(right) + 1;
         return new Node<>(key, left, right, n);
     }
 
