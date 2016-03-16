@@ -232,7 +232,7 @@ final class WeightBalancedTree<K> {
         return new Node<>(key, left, right, n);
     }
 
-    private class Node<T> {
+    private final class Node<T> {
         final T key;
         final Node<T> left;
         final Node<T> right;
@@ -246,7 +246,7 @@ final class WeightBalancedTree<K> {
         }
     }
 
-    private class WeightBalancedTreeIterator<T> implements Iterator<T> {
+    private final class WeightBalancedTreeIterator<T> implements Iterator<T> {
         private Deque<Node<K>> stack;
         private Node<K> next;
         private Function<K, T> nodeMapper;

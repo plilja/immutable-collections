@@ -4,13 +4,13 @@ import java.util.Iterator;
 
 // TODO: 06/03/16 Replace with finger trees
 final class MapBasedImmutableList<T> implements ImmutableList<T> {
-    private final ImmutableMap<Long, T> map;
+    private final WeightBalancedTreeMap<Long, T> map;
 
     public MapBasedImmutableList() {
         this(new WeightBalancedTreeMap<>(Long::compare));
     }
 
-    private MapBasedImmutableList(ImmutableMap<Long, T> map) {
+    private MapBasedImmutableList(WeightBalancedTreeMap<Long, T> map) {
         this.map = map;
     }
 
@@ -35,7 +35,7 @@ final class MapBasedImmutableList<T> implements ImmutableList<T> {
         for (long i = 0; i < size(); i++) {
             T otherValue = map.get(i);
             if (otherValue.equals(value)) {
-                ImmutableMap<Long, T> newMap = new WeightBalancedTreeMap<>(Long::compare);
+                WeightBalancedTreeMap<Long, T> newMap = new WeightBalancedTreeMap<>(Long::compare);
                 for (long j = 0; j < size(); j++) {
                     if (j != i) {
                         newMap = newMap.put(newMap.size(), map.get(j));
