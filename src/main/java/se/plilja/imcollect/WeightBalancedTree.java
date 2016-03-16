@@ -197,7 +197,7 @@ final class WeightBalancedTree<K> {
     }
 
     public <T> Iterator<T> iterator(Function<K, T> mapping) {
-        return new WeightBalancedTreeIterator<T>(root, mapping);
+        return new WeightBalancedTreeIterator<>(root, mapping);
     }
 
     public long size() {
@@ -232,13 +232,13 @@ final class WeightBalancedTree<K> {
         return new Node<>(key, left, right, n);
     }
 
-    private class Node<K> {
-        final K key;
-        final Node<K> left;
-        final Node<K> right;
+    private class Node<T> {
+        final T key;
+        final Node<T> left;
+        final Node<T> right;
         final long size;
 
-        private Node(K key, Node<K> left, Node<K> right, long size) {
+        private Node(T key, Node<T> left, Node<T> right, long size) {
             this.key = key;
             this.left = left;
             this.right = right;

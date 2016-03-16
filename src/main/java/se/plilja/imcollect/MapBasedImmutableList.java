@@ -1,7 +1,6 @@
 package se.plilja.imcollect;
 
 import java.util.Iterator;
-import java.util.Objects;
 
 // TODO: 06/03/16 Replace with finger trees
 final class MapBasedImmutableList<T> implements ImmutableList<T> {

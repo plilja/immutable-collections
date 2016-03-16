@@ -1,6 +1,8 @@
 package se.plilja.imcollect;
 
-import java.util.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.Iterator;
 
 final class ReversedImmutableList<T> implements ImmutableCollection<T> {
     private final ReversedImmutableList<T> next;
@@ -45,6 +47,7 @@ final class ReversedImmutableList<T> implements ImmutableCollection<T> {
         while (match.value != null && !match.value.equals(value)) {
             q.addFirst(match.value);
             match = match.next;
+            assert match != null;
         }
         if (match.value == null) {
             return this; // value is not present, reuse this object
@@ -62,7 +65,7 @@ final class ReversedImmutableList<T> implements ImmutableCollection<T> {
     @Override
     public long size() {
         int r = 0;
-        for (T foo : this) {
+        for (T ignored : this) {
             r++;
         }
         return r;

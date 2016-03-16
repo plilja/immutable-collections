@@ -20,7 +20,7 @@ final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
         if (value == null) {
             throw new IllegalArgumentException("Null values are not supported");
         }
-        return new WeightBalancedTreeSet<T>(tree.add(value));
+        return new WeightBalancedTreeSet<>(tree.add(value));
     }
 
     @Override
@@ -28,7 +28,7 @@ final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
         if (value == null) {
             return this; // null can not be present, hence there is nothing to remove
         }
-        return new WeightBalancedTreeSet<T>(tree.remove(value));
+        return new WeightBalancedTreeSet<>(tree.remove(value));
     }
 
     @Override

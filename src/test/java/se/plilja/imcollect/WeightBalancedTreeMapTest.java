@@ -58,6 +58,7 @@ public class WeightBalancedTreeMapTest {
         }
     }
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void stressTestReferenceImplementation() {
         TreeMap<Integer, String> target = new TreeMap<>();
