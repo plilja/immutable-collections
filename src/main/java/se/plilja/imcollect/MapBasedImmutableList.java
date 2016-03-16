@@ -17,7 +17,9 @@ final class MapBasedImmutableList<T> implements ImmutableList<T> {
 
     @Override
     public MapBasedImmutableList<T> add(T value) {
-        Objects.requireNonNull(value, "Null values are not supported");
+        if (value == null) {
+            throw new IllegalArgumentException("Null values are not supported");
+        }
         return new MapBasedImmutableList<>(map.put(size(), value));
     }
 

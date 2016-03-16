@@ -22,7 +22,9 @@ final class ReversedImmutableList<T> implements ImmutableCollection<T> {
 
     @Override
     public ReversedImmutableList<T> add(T value) {
-        Objects.requireNonNull(value, "Null values are not supported");
+        if (value == null) {
+            throw new IllegalArgumentException("Null values are not supported");
+        }
 
         return new ReversedImmutableList<>(value, this);
     }

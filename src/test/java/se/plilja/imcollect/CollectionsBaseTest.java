@@ -7,6 +7,7 @@ import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import java.util.Arrays;
 import java.util.List;
 
 import static java.util.Arrays.asList;
@@ -18,7 +19,6 @@ public abstract class CollectionsBaseTest {
     private final ImmutableCollection<Integer> empty;
 
     // TODO: 05/03/16 Verify immutable
-    // TODO: 05/03/16 null-tests
 
     public CollectionsBaseTest(ImmutableCollection<Integer> empty) {
         this.empty = empty;
@@ -151,5 +151,36 @@ public abstract class CollectionsBaseTest {
         assertEquals(asList(2, 6, 10, 14, 18), result);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void addingNullShouldNotBeAllowed1() {
+        empty.add(null);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void addingNullShouldNotBeAllowed2() {
+        empty.addAll(Arrays.asList(1, 2, null, 3, 4));
+    }
+
+    @Property
+    public void nullShouldNeverBePresent(List<Integer> base) {
+        ImmutableCollection<Integer> target = empty.addAll(base);
+
+        // when
+        boolean res = target.contains(null);
+
+        // then
+        assertEquals(false, res);
+    }
+
+    @Property
+    public void removingNullShouldReturnTheExactSameInstance(List<Integer> base) {
+        ImmutableCollection<Integer> target = empty.addAll(base);
+
+        // when
+        ImmutableCollection<Integer> result = target.remove(null);
+
+        // then
+        assertSame(target, result);
+    }
 
 }

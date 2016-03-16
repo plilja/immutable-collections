@@ -10,6 +10,7 @@ import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertSame;
 
 @RunWith(JUnitQuickcheck.class)
 public class WeightBalancedTreeMapTest {
@@ -202,7 +203,7 @@ public class WeightBalancedTreeMapTest {
     }
 
     @Property
-    public void lookupNullShouldAlwaysReturnEmpty(List<@InRange(minInt = -100, maxInt = 100) Integer> baseValues) {
+    public void lookupNullShouldAlwaysReturnEmpty(List<Integer> baseValues) {
         WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, i);
@@ -212,4 +213,29 @@ public class WeightBalancedTreeMapTest {
         assertFalse(target.contains(null));
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void insertNullKeyShouldFail() {
+        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        target.put(null, 4711);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void insertNullValueShouldFail() {
+        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        target.put(4711, null);
+    }
+
+    @Property
+    public void removeNullShouldReturnTheExactSameInstance(List<Integer> baseValues) {
+        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        for (int i : baseValues) {
+            target = target.put(i, i);
+        }
+
+        // when
+        WeightBalancedTreeMap<Integer, Integer> result = target.remove(null);
+
+        // then
+        assertSame(result, target);
+    }
 }

@@ -26,6 +26,12 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
 
     @Override
     public WeightBalancedTreeMap<K, V> put(K key, V value) {
+        if (key == null) {
+            throw new IllegalArgumentException("Null keys are not supported");
+        }
+        if (value == null) {
+            throw new IllegalArgumentException("Null values are not supported");
+        }
         return new WeightBalancedTreeMap<>(tree.add(Pair.make(key, value)));
     }
 
@@ -41,6 +47,9 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
 
     @Override
     public WeightBalancedTreeMap<K, V> remove(K key) {
+        if (key == null) {
+            return this;
+        }
         return new WeightBalancedTreeMap<>(tree.remove(Pair.make(key, null)));
     }
 
