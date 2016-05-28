@@ -32,7 +32,7 @@ final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
     }
 
     @Override
-    public long size() {
+    public int size() {
         return tree.size();
     }
 

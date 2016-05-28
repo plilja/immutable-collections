@@ -63,7 +63,7 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
         }
     }
 
-    private void verifyCausesOutOfBounds(long idx, Consumer<Long> actionThatShouldCauseOutOfBoundsException) {
+    private void verifyCausesOutOfBounds(int idx, Consumer<Integer> actionThatShouldCauseOutOfBoundsException) {
         try {
             actionThatShouldCauseOutOfBoundsException.accept(idx);
             assertTrue("Should have triggered IndexOutOfBoundsException before reaching here", false);

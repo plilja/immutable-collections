@@ -64,7 +64,7 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
     }
 
     @Override
-    public long size() {
+    public int size() {
         return tree.size();
     }
 }

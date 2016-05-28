@@ -39,5 +39,5 @@ public interface ImmutableMap<K, V> {
 
     Iterable<V> values();
 
-    long size();
+    int size();
 }

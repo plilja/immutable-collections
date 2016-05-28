@@ -96,7 +96,7 @@ final class WeightBalancedTree<K> {
         }
     }
 
-    private long nodeSize(Node<K> node) {
+    private int nodeSize(Node<K> node) {
         if (node == null) {
             return 0;
         } else {
@@ -200,7 +200,7 @@ final class WeightBalancedTree<K> {
         return new WeightBalancedTreeIterator<>(root, mapping);
     }
 
-    public long size() {
+    public int size() {
         return nodeSize(root);
     }
 
@@ -228,7 +228,7 @@ final class WeightBalancedTree<K> {
     }
 
     private Node<K> node(K key, Node<K> left, Node<K> right) {
-        long n = nodeSize(left) + nodeSize(right) + 1;
+        int n = nodeSize(left) + nodeSize(right) + 1;
         return new Node<>(key, left, right, n);
     }
 
@@ -236,9 +236,9 @@ final class WeightBalancedTree<K> {
         final T key;
         final Node<T> left;
         final Node<T> right;
-        final long size;
+        final int size;
 
-        private Node(T key, Node<T> left, Node<T> right, long size) {
+        private Node(T key, Node<T> left, Node<T> right, int size) {
             this.key = key;
             this.left = left;
             this.right = right;

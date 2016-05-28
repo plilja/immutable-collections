@@ -2,11 +2,11 @@ package se.plilja.imcollect;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
 
-    T get(long idx);
+    T get(int idx);
 
-    ImmutableList<T> set(long idx, T value);
+    ImmutableList<T> set(int idx, T value);
 
-    long indexOf(T value);
+    int indexOf(T value);
 
-    long lastIndexOf(T value);
+    int lastIndexOf(T value);
 }
