@@ -1,10 +1,12 @@
 package se.plilja.imcollect;
 
 import org.junit.Test;
+import se.plilja.imcollect.fingertrees.FingerTreeList;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.assertTrue;
 public class ImmutabilityTest {
     private final List<Class<?>> allowedMutability = Collections.singletonList(Comparator.class);
@@ -12,6 +14,7 @@ public class ImmutabilityTest {
     @Test
     public void allClassesShouldBeImmutable() {
         assertImmutable(MapBasedImmutableList.class);
+        assertImmutable(FingerTreeList.class);
         assertImmutable(Pair.class);
         assertImmutable(ReversedImmutableList.class);
         assertImmutable(WeightBalancedTree.class);
@@ -22,13 +25,14 @@ public class ImmutabilityTest {
     private void assertImmutable(Class<?> clazz) {
         assertImmutable(clazz, new HashSet<>());
     }
+
     private void assertImmutable(Class<?> clazz, Set<Class<?>> visited) {
         if (visited.contains(clazz) || allowedMutability.contains(clazz)) {
             return;
         }
         visited.add(clazz);
 
-        assertTrue(String.format("Class should be final (%s)", clazz.getName()), Modifier.isFinal(clazz.getModifiers()));
+        assertTrue(String.format("Class should be final (%s)", clazz.getName()), Modifier.isFinal(clazz.getModifiers()) || classFinalExceptions().contains(clazz.getSimpleName()));
 
         Arrays.stream(clazz.getDeclaredFields())
                 .filter(field -> !isGenericType(field.getType()))
@@ -41,5 +45,9 @@ public class ImmutabilityTest {
 
     private boolean isGenericType(Class<?> clazz) {
         return clazz.equals(Object.class);
+    }
+
+    private static Collection<String> classFinalExceptions() {
+        return Collections.singletonList("FingerTree"); // The abstract base class which is package protected is allowed to not be final
     }
 }

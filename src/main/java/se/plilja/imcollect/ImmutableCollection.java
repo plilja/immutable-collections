@@ -19,6 +19,9 @@ public interface ImmutableCollection<T> extends Iterable<T> {
         return res;
     }
 
+    /**
+     * Remove first occurence of value if present.
+     */
     ImmutableCollection<T> remove(T value);
 
     default boolean isEmpty() {

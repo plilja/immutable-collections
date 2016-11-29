@@ -11,7 +11,7 @@ final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
         this.tree = tree;
     }
 
-    public WeightBalancedTreeMap(Comparator<K> comparator) {
+    WeightBalancedTreeMap(Comparator<K> comparator) {
         this.tree = new WeightBalancedTree<>((p1, p2) -> comparator.compare(p1.first, p2.first));
     }
 

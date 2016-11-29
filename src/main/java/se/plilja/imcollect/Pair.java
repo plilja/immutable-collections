@@ -1,6 +1,7 @@
 package se.plilja.imcollect;
 
-final class Pair<A, B> {
+// TODO not public
+public final class Pair<A, B> {
     public final A first;
     public final B second;
 

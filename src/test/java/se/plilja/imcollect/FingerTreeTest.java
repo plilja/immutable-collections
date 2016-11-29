@@ -2,6 +2,7 @@ package se.plilja.imcollect;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
+import se.plilja.imcollect.fingertrees.FingerTreeList;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,15 +15,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-public class MapBasedImmutableListTest extends CollectionsBaseTest {
+public class FingerTreeTest extends CollectionsBaseTest {
 
-    public MapBasedImmutableListTest() {
-        super(new MapBasedImmutableList<>());
+    public FingerTreeTest() {
+        super(FingerTreeList.empty());
     }
 
     @Property
     public void toMutableCollectionShouldReturnObjectEqualToArrayList(ArrayList<Integer> values) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<>();
+        FingerTreeList<Integer> target = FingerTreeList.empty();
         target = target.addAll(values);
 
         // when
@@ -34,7 +35,7 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
 
     @Property
     public void setFollowedByGetShouldYieldSetValue(@InRange(minInt = 0, maxInt = 10) int idx, int value) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<>();
+        FingerTreeList<Integer> target = FingerTreeList.empty();
         for (int i = 0; i < 11; i++) {
             target = target.add(i);
         }
@@ -49,7 +50,7 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
 
     @Property
     public void accessingObjectWithIllegalIndexShouldYieldIndexOutOfBounds(List<Integer> values) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<Integer>()
+        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         // when, then
@@ -74,7 +75,7 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
 
     @Property
     public void getIndexOfShouldReturnValue(List<Integer> values) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<Integer>()
+        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         for (int value : values) {
@@ -85,14 +86,16 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
 
     @Property
     public void getLastIndexOfVsIndexOf(List<Integer> values) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<Integer>()
+        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         for (int value : values) {
-            assertEquals(0, IntStream.range(0, (int) target.indexOf(value))
+            assert target.indexOf(value) != -1;
+            assert target.lastIndexOf(value) != -1;
+            assertEquals(0, IntStream.range(0, target.indexOf(value))
                     .filter(i -> target.get(i).equals(value))
                     .count());
-            assertEquals(0, IntStream.range((int) target.lastIndexOf(value) + 1, (int) target.size())
+            assertEquals(0, IntStream.range(target.lastIndexOf(value) + 1, target.size())
                     .filter(i -> target.get(i).equals(value))
                     .count());
             assertThat(target.indexOf(value), lessThanOrEqualTo(target.lastIndexOf(value)));
@@ -101,10 +104,11 @@ public class MapBasedImmutableListTest extends CollectionsBaseTest {
 
     @Property
     public void indexOfShouldReturnMinusOneForNonExistingValue(List<@InRange(minInt = -1000, maxInt = -1) Integer> values, @InRange(minInt = 0, maxInt = 1000) Integer query) {
-        MapBasedImmutableList<Integer> target = new MapBasedImmutableList<Integer>()
+        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         assertEquals(-1, target.indexOf(query));
         assertEquals(-1, target.lastIndexOf(query));
     }
+
 }
