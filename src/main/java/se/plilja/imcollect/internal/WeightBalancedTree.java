@@ -11,10 +11,10 @@ public final class WeightBalancedTree<K> {
     private static final int EQ = 0;
     private static final int GT = 1;
 
-    private final Node<K> root;
+    private final WBNode<K> root;
     private final Comparator<K> comp;
 
-    private WeightBalancedTree(Node<K> root, Comparator<K> comparator) {
+    private WeightBalancedTree(WBNode<K> root, Comparator<K> comparator) {
         this.root = root;
         this.comp = comparator;
     }
@@ -31,17 +31,17 @@ public final class WeightBalancedTree<K> {
         }
     }
 
-    public Optional<K> lookup(Node<K> node, K key) {
-        if (node == null) {
+    public Optional<K> lookup(WBNode<K> WBNode, K key) {
+        if (WBNode == null) {
             return Optional.empty();
         } else {
-            switch (compare(key, node.key)) {
+            switch (compare(key, WBNode.key)) {
                 case LT:
-                    return lookup(node.left, key);
+                    return lookup(WBNode.left, key);
                 case EQ:
-                    return Optional.of(node.key);
+                    return Optional.of(WBNode.key);
                 case GT:
-                    return lookup(node.right, key);
+                    return lookup(WBNode.right, key);
                 default:
                     throw new IllegalStateException();
             }
@@ -53,146 +53,146 @@ public final class WeightBalancedTree<K> {
     }
 
     public WeightBalancedTree<K> add(K key) {
-        Node<K> newRoot = add(root, key);
+        WBNode<K> newRoot = add(root, key);
         return new WeightBalancedTree<>(newRoot, comp);
     }
 
-    private Node<K> add(Node<K> node, K key) {
-        if (node == null) {
-            return new Node<>(key, null, null, 1);
+    private WBNode<K> add(WBNode<K> WBNode, K key) {
+        if (WBNode == null) {
+            return new WBNode<>(key, null, null, 1);
         } else {
-            switch (compare(key, node.key)) {
+            switch (compare(key, WBNode.key)) {
                 case LT:
-                    Node<K> newLeft = add(node.left, key);
-                    return balance(node(node.key, newLeft, node.right));
+                    WBNode<K> newLeft = add(WBNode.left, key);
+                    return balance(node(WBNode.key, newLeft, WBNode.right));
                 case EQ:
-                    return node(key, node.left, node.right);
+                    return node(key, WBNode.left, WBNode.right);
                 case GT:
-                    Node<K> newRight = add(node.right, key);
-                    return balance(node(node.key, node.left, newRight));
+                    WBNode<K> newRight = add(WBNode.right, key);
+                    return balance(node(WBNode.key, WBNode.left, newRight));
                 default:
                     throw new IllegalStateException();
             }
         }
     }
 
-    private Node<K> balance(Node<K> node) {
-        if (nodeSize(node) <= 2) {
-            return node;
-        } else if (nodeSize(node.right) > OMEGA * nodeSize(node.left) + DELTA) {
-            if (nodeSize(node.right.left) < ALPHA * nodeSize(node.right.right)) {
-                return singleLeft(node);
+    private WBNode<K> balance(WBNode<K> WBNode) {
+        if (nodeSize(WBNode) <= 2) {
+            return WBNode;
+        } else if (nodeSize(WBNode.right) > OMEGA * nodeSize(WBNode.left) + DELTA) {
+            if (nodeSize(WBNode.right.left) < ALPHA * nodeSize(WBNode.right.right)) {
+                return singleLeft(WBNode);
             } else {
-                return doubleLeft(node);
+                return doubleLeft(WBNode);
             }
-        } else if (nodeSize(node.left) > OMEGA * nodeSize(node.right) + DELTA) {
-            if (nodeSize(node.left.right) < ALPHA * nodeSize(node.left.left)) {
-                return singleRight(node);
+        } else if (nodeSize(WBNode.left) > OMEGA * nodeSize(WBNode.right) + DELTA) {
+            if (nodeSize(WBNode.left.right) < ALPHA * nodeSize(WBNode.left.left)) {
+                return singleRight(WBNode);
             } else {
-                return doubleRight(node);
+                return doubleRight(WBNode);
             }
         } else {
-            return node;
+            return WBNode;
         }
     }
 
-    private int nodeSize(Node<K> node) {
-        if (node == null) {
+    private int nodeSize(WBNode<K> WBNode) {
+        if (WBNode == null) {
             return 0;
         } else {
-            return node.size;
+            return WBNode.size;
         }
     }
 
-    private Node<K> doubleRight(Node<K> node) {
-        Node<K> L = node.left;
-        Node<K> R = node.right;
-        Node<K> LR = L.right;
+    private WBNode<K> doubleRight(WBNode<K> WBNode) {
+        WBNode<K> L = WBNode.left;
+        WBNode<K> R = WBNode.right;
+        WBNode<K> LR = L.right;
         return node(LR.key,
                 node(L.key, L.left, LR.left),
-                node(node.key, LR.right, R));
+                node(WBNode.key, LR.right, R));
     }
 
-    private Node<K> singleRight(Node<K> node) {
-        Node<K> L = node.left;
-        Node<K> R = node.right;
-        Node<K> newR = node(node.key, L.right, R);
+    private WBNode<K> singleRight(WBNode<K> WBNode) {
+        WBNode<K> L = WBNode.left;
+        WBNode<K> R = WBNode.right;
+        WBNode<K> newR = node(WBNode.key, L.right, R);
         return node(L.key, L.left, newR);
     }
 
-    private Node<K> doubleLeft(Node<K> node) {
-        Node<K> L = node.left;
-        Node<K> R = node.right;
-        Node<K> RL = R.left;
+    private WBNode<K> doubleLeft(WBNode<K> WBNode) {
+        WBNode<K> L = WBNode.left;
+        WBNode<K> R = WBNode.right;
+        WBNode<K> RL = R.left;
         return node(RL.key,
-                node(node.key, L, RL.left),
+                node(WBNode.key, L, RL.left),
                 node(R.key, RL.right, R.right));
     }
 
-    private Node<K> singleLeft(Node<K> node) {
-        Node<K> left = node.left;
-        Node<K> right = node.right;
-        Node<K> newLeft = node(node.key, left, right.left);
+    private WBNode<K> singleLeft(WBNode<K> WBNode) {
+        WBNode<K> left = WBNode.left;
+        WBNode<K> right = WBNode.right;
+        WBNode<K> newLeft = node(WBNode.key, left, right.left);
         return node(right.key, newLeft, right.right);
     }
 
     public WeightBalancedTree<K> remove(K key) {
-        Node<K> newRoot = remove(root, key);
+        WBNode<K> newRoot = remove(root, key);
         return new WeightBalancedTree<>(newRoot, comp);
     }
 
-    private Node<K> remove(Node<K> node, K key) {
-        if (node == null) {
+    private WBNode<K> remove(WBNode<K> WBNode, K key) {
+        if (WBNode == null) {
             return null;
         } else {
-            switch (compare(key, node.key)) {
+            switch (compare(key, WBNode.key)) {
                 case LT:
-                    Node<K> newLeft = remove(node.left, key);
-                    return balance(node(node.key, newLeft, node.right));
+                    WBNode<K> newLeft = remove(WBNode.left, key);
+                    return balance(node(WBNode.key, newLeft, WBNode.right));
                 case EQ:
-                    return concat(node.left, node.right);
+                    return concat(WBNode.left, WBNode.right);
                 case GT:
-                    Node<K> newRight = remove(node.right, key);
-                    return balance(node(node.key, node.left, newRight));
+                    WBNode<K> newRight = remove(WBNode.right, key);
+                    return balance(node(WBNode.key, WBNode.left, newRight));
                 default:
                     throw new IllegalStateException();
             }
         }
     }
 
-    private Node<K> concat(Node<K> left, Node<K> right) {
+    private WBNode<K> concat(WBNode<K> left, WBNode<K> right) {
         if (right == null) {
             return left;
         } else if (left == null) {
             return right;
         } else if (nodeSize(left) > nodeSize(right)) {
-            Pair<K, Node<K>> r = popMax(left);
+            Pair<K, WBNode<K>> r = popMax(left);
             K m = r.first;
-            Node<K> newLeft = r.second;
+            WBNode<K> newLeft = r.second;
             return node(m, newLeft, right);
         } else {
-            Pair<K, Node<K>> r = popMin(right);
+            Pair<K, WBNode<K>> r = popMin(right);
             K m = r.first;
-            Node<K> newRight = r.second;
+            WBNode<K> newRight = r.second;
             return node(m, left, newRight);
         }
     }
 
-    private Pair<K, Node<K>> popMin(Node<K> node) {
-        if (node.left == null) {
-            return Pair.make(node.key, node.right);
+    private Pair<K, WBNode<K>> popMin(WBNode<K> WBNode) {
+        if (WBNode.left == null) {
+            return Pair.make(WBNode.key, WBNode.right);
         } else {
-            Pair<K, Node<K>> r = popMin(node.left);
-            return Pair.make(r.first, balance(node(node.key, r.second, node.right)));
+            Pair<K, WBNode<K>> r = popMin(WBNode.left);
+            return Pair.make(r.first, balance(node(WBNode.key, r.second, WBNode.right)));
         }
     }
 
-    private Pair<K, Node<K>> popMax(Node<K> node) {
-        if (node.right == null) {
-            return Pair.make(node.key, node.left);
+    private Pair<K, WBNode<K>> popMax(WBNode<K> WBNode) {
+        if (WBNode.right == null) {
+            return Pair.make(WBNode.key, WBNode.left);
         } else {
-            Pair<K, Node<K>> r = popMax(node.right);
-            return Pair.make(r.first, balance(node(node.key, node.left, r.second)));
+            Pair<K, WBNode<K>> r = popMax(WBNode.right);
+            return Pair.make(r.first, balance(node(WBNode.key, WBNode.left, r.second)));
         }
     }
 
@@ -211,34 +211,34 @@ public final class WeightBalancedTree<K> {
         return isConsistent(root);
     }
 
-    private Pair<Boolean, String> isConsistent(Node<K> node) {
-        if (node == null) {
+    private Pair<Boolean, String> isConsistent(WBNode<K> WBNode) {
+        if (WBNode == null) {
             return Pair.make(true, "");
         } else {
-            if (nodeSize(node) != nodeSize(node.left) + nodeSize(node.right) + 1) {
+            if (nodeSize(WBNode) != nodeSize(WBNode.left) + nodeSize(WBNode.right) + 1) {
                 return Pair.make(false, "Node size not equal to size of node children");
             }
-            if (nodeSize(node.left) > OMEGA * nodeSize(node.right) + DELTA || nodeSize(node.right) > OMEGA * nodeSize(node.left) + DELTA) {
+            if (nodeSize(WBNode.left) > OMEGA * nodeSize(WBNode.right) + DELTA || nodeSize(WBNode.right) > OMEGA * nodeSize(WBNode.left) + DELTA) {
                 return Pair.make(false, "Tree is not weight balanced");
             }
-            Pair<Boolean, String> leftConsistent = isConsistent(node.left);
-            Pair<Boolean, String> rightConsistent = isConsistent(node.right);
+            Pair<Boolean, String> leftConsistent = isConsistent(WBNode.left);
+            Pair<Boolean, String> rightConsistent = isConsistent(WBNode.right);
             return Pair.make(leftConsistent.first && rightConsistent.first, leftConsistent.second + rightConsistent.second);
         }
     }
 
-    private Node<K> node(K key, Node<K> left, Node<K> right) {
+    private WBNode<K> node(K key, WBNode<K> left, WBNode<K> right) {
         int n = nodeSize(left) + nodeSize(right) + 1;
-        return new Node<>(key, left, right, n);
+        return new WBNode<>(key, left, right, n);
     }
 
-    private final class Node<T> {
+    private final class WBNode<T> {
         final T key;
-        final Node<T> left;
-        final Node<T> right;
+        final WBNode<T> left;
+        final WBNode<T> right;
         final int size;
 
-        private Node(T key, Node<T> left, Node<T> right, int size) {
+        private WBNode(T key, WBNode<T> left, WBNode<T> right, int size) {
             this.key = key;
             this.left = left;
             this.right = right;
@@ -247,11 +247,11 @@ public final class WeightBalancedTree<K> {
     }
 
     private final class WeightBalancedTreeIterator<T> implements Iterator<T> {
-        private Deque<Node<K>> stack;
-        private Node<K> next;
+        private Deque<WBNode<K>> stack;
+        private WBNode<K> next;
         private Function<K, T> nodeMapper;
 
-        public WeightBalancedTreeIterator(Node<K> root, Function<K, T> nodeMapper) {
+        public WeightBalancedTreeIterator(WBNode<K> root, Function<K, T> nodeMapper) {
             this.nodeMapper = nodeMapper;
             stack = new ArrayDeque<>();
             goLeft(root);
@@ -265,23 +265,23 @@ public final class WeightBalancedTree<K> {
 
         @Override
         public T next() {
-            Node<K> res = next;
+            WBNode<K> res = next;
             next = extractNext();
             return nodeMapper.apply(res.key);
         }
 
-        private Node<K> extractNext() {
+        private WBNode<K> extractNext() {
             if (stack.isEmpty()) {
                 return null;
             } else {
-                Node<K> p = stack.pop();
+                WBNode<K> p = stack.pop();
                 goLeft(p.right);
                 return p;
             }
         }
 
-        private void goLeft(Node<K> node) {
-            Node<K> curr = node;
+        private void goLeft(WBNode<K> WBNode) {
+            WBNode<K> curr = WBNode;
             while (curr != null) {
                 stack.push(curr);
                 curr = curr.left;
