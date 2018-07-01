@@ -1,6 +1,5 @@
 package se.plilja.imcollect.internal;
 
-// TODO not public
 public final class Pair<A, B> {
     public final A first;
     public final B second;
