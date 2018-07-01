@@ -44,11 +44,11 @@ public interface ImmutableMap<K, V> {
 
     int size();
 
-    static <K extends Comparable<K>, V> ImmutableMap<K, V> empty() {
+    public static <K extends Comparable<K>, V> ImmutableMap<K, V> empty() {
         return new WeightBalancedTreeMap<K, V>(Comparator.naturalOrder());
     }
 
-    static <K, V> ImmutableMap<K, V> empty(Comparator<K> comparator) {
+    public static <K, V> ImmutableMap<K, V> empty(Comparator<K> comparator) {
         return new WeightBalancedTreeMap<>(comparator);
     }
 }

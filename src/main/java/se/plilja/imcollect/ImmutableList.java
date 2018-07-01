@@ -26,7 +26,7 @@ public interface ImmutableList<T> extends ImmutableCollection<T> {
         return indexOf(value) != -1;
     }
 
-    static <T> ImmutableList<T> empty() {
+    public static <T> ImmutableList<T> empty() {
         return FingerTreeList.empty();
     }
 }
