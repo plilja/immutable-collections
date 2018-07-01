@@ -12,7 +12,6 @@ public class ImmutabilityTest {
 
     @Test
     public void allClassesShouldBeImmutable() {
-        assertImmutable(MapBasedImmutableList.class);
         assertImmutable(FingerTreeList.class);
         assertImmutable(Pair.class);
         assertImmutable(WeightBalancedTree.class);
