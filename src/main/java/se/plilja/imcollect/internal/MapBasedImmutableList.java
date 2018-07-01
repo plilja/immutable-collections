@@ -4,7 +4,6 @@ import se.plilja.imcollect.ImmutableList;
 
 import java.util.Iterator;
 
-// TODO: 06/03/16 Replace with finger trees
 public final class MapBasedImmutableList<T> implements ImmutableList<T> {
     private final WeightBalancedTreeMap<Integer, T> map;
 
