@@ -12,7 +12,7 @@ public final class FingerTreeList<T> implements ImmutableList<T> {
     }
 
     public static <T> FingerTreeList<T> empty() {
-        return new FingerTreeList<T>(new Empty<>(new CountingMeasure<>()));
+        return new FingerTreeList<>(new Empty<>(new CountingMeasure<>()));
     }
 
     private static class CountingMeasure<T> implements Measure<Integer, T> {

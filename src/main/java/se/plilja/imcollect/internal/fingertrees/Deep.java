@@ -73,7 +73,7 @@ class Deep<T, M> extends FingerTree<T, M> {
             Split<FingerTree<T, M>, T> split = splitTree(predicate, measure.identity());
             return Pair.make(split.left, split.right.pushLeft(split.value));
         } else {
-            return Pair.make(this, new Empty<T, M>(measure));
+            return Pair.make(this, new Empty<>(measure));
         }
     }
 
@@ -114,7 +114,7 @@ class Deep<T, M> extends FingerTree<T, M> {
         } else {
             Deep<T, M> deepXs = (Deep<T, M>) xs;
             LinkedList<T> concat = concat(suffix, ts, deepXs.prefix);
-            return new Deep<T, M>(prefix, middle.app3(nodes(concat, measure), deepXs.middle), deepXs.suffix, measure);
+            return new Deep<>(prefix, middle.app3(nodes(concat, measure), deepXs.middle), deepXs.suffix, measure);
 
         }
     }
@@ -149,25 +149,25 @@ class Deep<T, M> extends FingerTree<T, M> {
     private static <T, M> FingerTree<T, M> deepL(Digit<T, M> prefix, FingerTree<Node<T, M>, M> middle, Digit<T, M> suffix, Measure<M, T> measure) {
         if (prefix.size() == 0) {
             return middle.viewL()
-                    .map(pair -> (FingerTree<T, M>) new Deep<T, M>(pair.first.toDigit(), pair.second.get(), suffix, measure))
+                    .map(pair -> (FingerTree<T, M>) new Deep<>(pair.first.toDigit(), pair.second.get(), suffix, measure))
                     .orElseGet(() -> toTree(suffix));
         } else {
-            return new Deep<T, M>(prefix, middle, suffix, measure);
+            return new Deep<>(prefix, middle, suffix, measure);
         }
     }
 
     private static <T, M> FingerTree<T, M> deepR(Digit<T, M> prefix, FingerTree<Node<T, M>, M> middle, Digit<T, M> suffix, Measure<M, T> measure) {
         if (suffix.size() == 0) {
             return middle.viewR()
-                    .map(pair -> (FingerTree<T, M>) new Deep<T, M>(prefix, pair.second.get(), pair.first.toDigit(), measure))
+                    .map(pair -> (FingerTree<T, M>) new Deep<>(prefix, pair.second.get(), pair.first.toDigit(), measure))
                     .orElseGet(() -> toTree(prefix));
         } else {
-            return new Deep<T, M>(prefix, middle, suffix, measure);
+            return new Deep<>(prefix, middle, suffix, measure);
         }
     }
 
     private static <T, M> FingerTree<T, M> toTree(Digit<T, M> digit) {
-        FingerTree<T, M> res = new Empty<T, M>(digit.measure);
+        FingerTree<T, M> res = new Empty<>(digit.measure);
         for (T t : digit) {
             res = res.pushRight(t);
         }
@@ -206,6 +206,6 @@ class Deep<T, M> extends FingerTree<T, M> {
             its.add(() -> node.iterator());
         }
         its.add(() -> suffix.iterator());
-        return new ChainingIterator<T>(its.iterator());
+        return new ChainingIterator<>(its.iterator());
     }
 }

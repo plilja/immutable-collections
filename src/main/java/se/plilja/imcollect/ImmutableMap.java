@@ -49,6 +49,6 @@ public interface ImmutableMap<K, V> {
     }
 
     static <K, V> ImmutableMap<K, V> empty(Comparator<K> comparator) {
-        return new WeightBalancedTreeMap<K, V>(comparator);
+        return new WeightBalancedTreeMap<>(comparator);
     }
 }

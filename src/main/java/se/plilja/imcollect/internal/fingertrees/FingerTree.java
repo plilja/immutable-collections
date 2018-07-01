@@ -50,7 +50,7 @@ abstract class FingerTree<T, M> implements Iterable<T> {
     abstract Optional<Pair<T, Supplier<FingerTree<T, M>>>> viewR();
 
     final FingerTree<T, M> concat(FingerTree<T, M> other) {
-        LinkedList<T> empty = new LinkedList<T>();
+        LinkedList<T> empty = new LinkedList<>();
         return app3(empty, other);
     }
 

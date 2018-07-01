@@ -142,7 +142,7 @@ class Digit<T, M> implements Iterable<T> {
 
     @Override
     public Iterator<T> iterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             int i = 0;
 
             @Override
@@ -158,7 +158,7 @@ class Digit<T, M> implements Iterable<T> {
     }
 
     Iterator<T> reverseIterator() {
-        return new Iterator<T>() {
+        return new Iterator<>() {
             int i = size() - 1;
 
             @Override

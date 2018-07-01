@@ -6,11 +6,11 @@ import java.util.Iterator;
 interface Node<T, M> extends Iterable<T> {
 
     static <T, M> Node<T, M> makeTwo(Measure<M, T> measure, T a, T b) {
-        return new Node2<T, M>(measure, a, b);
+        return new Node2<>(measure, a, b);
     }
 
     static <T, M> Node<T, M> makeThree(Measure<M, T> measure, T a, T b, T c) {
-        return new Node3<T, M>(measure, a, b, c);
+        return new Node3<>(measure, a, b, c);
     }
 
     M measured();
@@ -42,7 +42,7 @@ interface Node<T, M> extends Iterable<T> {
 
         @Override
         public Iterator<T> iterator() {
-            return new VarArgsIterator<T>(a, b);
+            return new VarArgsIterator<>(a, b);
         }
     }
 
@@ -73,7 +73,7 @@ interface Node<T, M> extends Iterable<T> {
 
         @Override
         public Iterator<T> iterator() {
-            return new VarArgsIterator<T>(a, b, c);
+            return new VarArgsIterator<>(a, b, c);
         }
     }
 }

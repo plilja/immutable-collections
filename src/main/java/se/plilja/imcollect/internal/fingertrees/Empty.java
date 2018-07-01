@@ -61,6 +61,6 @@ class Empty<T, M> extends FingerTree<T, M> {
 
     @Override
     public Iterator<T> iterator() {
-        return new VarArgsIterator<T>();
+        return new VarArgsIterator<>();
     }
 }

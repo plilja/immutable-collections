@@ -82,6 +82,6 @@ class Single<T, M> extends FingerTree<T, M> {
 
     @Override
     public Iterator<T> iterator() {
-        return new VarArgsIterator<T>(value);
+        return new VarArgsIterator<>(value);
     }
 }
