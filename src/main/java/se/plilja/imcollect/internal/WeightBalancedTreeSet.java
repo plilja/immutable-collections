@@ -1,10 +1,12 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
+
+import se.plilja.imcollect.ImmutableSet;
 
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.function.Function;
 
-final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
+public final class WeightBalancedTreeSet<T> implements ImmutableSet<T> {
     private final WeightBalancedTree<T> tree;
 
     private WeightBalancedTreeSet(WeightBalancedTree<T> tree) {

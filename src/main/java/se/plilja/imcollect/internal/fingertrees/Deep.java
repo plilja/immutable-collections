@@ -1,7 +1,7 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 
-import se.plilja.imcollect.Pair;
+import se.plilja.imcollect.internal.Pair;
 
 import java.util.ArrayList;
 import java.util.Iterator;

@@ -1,9 +1,8 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 
 import java.util.Collections;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.Supplier;
 
 final class ChainingIterator<T> implements Iterator<T> {

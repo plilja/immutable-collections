@@ -1,5 +1,7 @@
 package se.plilja.imcollect;
 
+import se.plilja.imcollect.internal.WeightBalancedTreeSet;
+
 import java.util.Comparator;
 
 public interface ImmutableSet<T> extends ImmutableCollection<T> {

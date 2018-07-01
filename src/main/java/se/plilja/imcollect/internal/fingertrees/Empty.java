@@ -1,10 +1,9 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
-import se.plilja.imcollect.Pair;
+import se.plilja.imcollect.internal.Pair;
 
 import java.util.Iterator;
 import java.util.LinkedList;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.function.Predicate;
 import java.util.function.Supplier;

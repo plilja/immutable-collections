@@ -1,4 +1,4 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
 
 // TODO not public
 public final class Pair<A, B> {

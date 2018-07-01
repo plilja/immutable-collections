@@ -1,10 +1,12 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
+
+import se.plilja.imcollect.ImmutableCollection;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.Iterator;
 
-final class ReversedImmutableList<T> implements ImmutableCollection<T> {
+public final class ReversedImmutableList<T> implements ImmutableCollection<T> {
     private final ReversedImmutableList<T> next;
     private final T value;
 

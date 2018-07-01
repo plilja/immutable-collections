@@ -1,6 +1,6 @@
 package se.plilja.imcollect;
 
-import se.plilja.imcollect.fingertrees.FingerTreeList;
+import se.plilja.imcollect.internal.fingertrees.FingerTreeList;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
 

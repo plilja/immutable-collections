@@ -1,4 +1,4 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -6,6 +6,7 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Assume;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import se.plilja.imcollect.ImmutableCollection;
 
 import java.util.Arrays;
 import java.util.List;
@@ -17,8 +18,6 @@ import static org.junit.Assert.*;
 @RunWith(JUnitQuickcheck.class)
 public abstract class CollectionsBaseTest {
     private final ImmutableCollection<Integer> empty;
-
-    // TODO: 05/03/16 Verify immutable
 
     public CollectionsBaseTest(ImmutableCollection<Integer> empty) {
         this.empty = empty;

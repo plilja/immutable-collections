@@ -1,8 +1,8 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal.fingertrees;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
-import se.plilja.imcollect.fingertrees.FingerTreeList;
+import se.plilja.imcollect.internal.CollectionsBaseTest;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,9 +11,7 @@ import java.util.function.Consumer;
 import java.util.stream.IntStream;
 
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FingerTreeTest extends CollectionsBaseTest {
 

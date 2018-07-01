@@ -1,4 +1,4 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
 
 import com.pholser.junit.quickcheck.Property;
 import com.pholser.junit.quickcheck.generator.InRange;
@@ -8,9 +8,7 @@ import org.junit.runner.RunWith;
 
 import java.util.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 @RunWith(JUnitQuickcheck.class)
 public class WeightBalancedTreeMapTest {

@@ -1,9 +1,11 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
+
+import se.plilja.imcollect.ImmutableList;
 
 import java.util.Iterator;
 
 // TODO: 06/03/16 Replace with finger trees
-final class MapBasedImmutableList<T> implements ImmutableList<T> {
+public final class MapBasedImmutableList<T> implements ImmutableList<T> {
     private final WeightBalancedTreeMap<Integer, T> map;
 
     public MapBasedImmutableList() {

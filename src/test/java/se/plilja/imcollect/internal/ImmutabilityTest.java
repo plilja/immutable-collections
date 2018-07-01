@@ -1,12 +1,11 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
 
 import org.junit.Test;
-import se.plilja.imcollect.fingertrees.FingerTreeList;
+import se.plilja.imcollect.internal.fingertrees.FingerTreeList;
 
 import java.lang.reflect.Modifier;
 import java.util.*;
 
-import static java.util.Arrays.asList;
 import static org.junit.Assert.assertTrue;
 public class ImmutabilityTest {
     private final List<Class<?>> allowedMutability = Collections.singletonList(Comparator.class);

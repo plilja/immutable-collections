@@ -1,4 +1,4 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 class MeasureNode<M, T> implements Measure<M, Node<T, M>> {
     private final Measure<M, T> wrapped;

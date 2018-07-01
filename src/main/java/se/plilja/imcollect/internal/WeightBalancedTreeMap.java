@@ -1,17 +1,19 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
+
+import se.plilja.imcollect.ImmutableMap;
 
 import java.util.Comparator;
 import java.util.Map;
 import java.util.Optional;
 
-final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
+public final class WeightBalancedTreeMap<K, V> implements ImmutableMap<K, V> {
     private final WeightBalancedTree<Pair<K, V>> tree;
 
     private WeightBalancedTreeMap(WeightBalancedTree<Pair<K, V>> tree) {
         this.tree = tree;
     }
 
-    WeightBalancedTreeMap(Comparator<K> comparator) {
+    public WeightBalancedTreeMap(Comparator<K> comparator) {
         this.tree = new WeightBalancedTree<>((p1, p2) -> comparator.compare(p1.first, p2.first));
     }
 

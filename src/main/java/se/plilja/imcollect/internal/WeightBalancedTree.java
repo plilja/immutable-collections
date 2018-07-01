@@ -1,9 +1,9 @@
-package se.plilja.imcollect;
+package se.plilja.imcollect.internal;
 
 import java.util.*;
 import java.util.function.Function;
 
-final class WeightBalancedTree<K> {
+public final class WeightBalancedTree<K> {
     private static final double OMEGA = 2.5;
     private static final double ALPHA = 1.5;
     private static final double DELTA = 1;

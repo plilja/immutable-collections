@@ -1,4 +1,4 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 class Split<SplitType, ValueType> {
     public final SplitType left;

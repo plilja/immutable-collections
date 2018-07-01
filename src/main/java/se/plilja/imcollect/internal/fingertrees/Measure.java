@@ -1,4 +1,4 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 /**
  * @param <M> The measure

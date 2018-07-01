@@ -1,11 +1,7 @@
-package se.plilja.imcollect.fingertrees;
+package se.plilja.imcollect.internal.fingertrees;
 
 
-import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
-
-import static java.util.Collections.emptyList;
 
 interface Node<T, M> extends Iterable<T> {
 
