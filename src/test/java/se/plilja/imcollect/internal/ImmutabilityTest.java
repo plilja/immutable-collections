@@ -15,7 +15,6 @@ public class ImmutabilityTest {
         assertImmutable(MapBasedImmutableList.class);
         assertImmutable(FingerTreeList.class);
         assertImmutable(Pair.class);
-        assertImmutable(ReversedImmutableList.class);
         assertImmutable(WeightBalancedTree.class);
         assertImmutable(WeightBalancedTreeMap.class);
         assertImmutable(WeightBalancedTreeSet.class);
