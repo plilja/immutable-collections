@@ -44,6 +44,14 @@ public interface ImmutableMap<K, V> {
 
     int size();
 
+    public static <K extends Comparable<K>, V> ImmutableMap<K, V> singletonMap(K key, V value) {
+        return ImmutableMap.<K, V>empty().put(key, value);
+    }
+
+    public static <K, V> ImmutableMap<K, V> singletonMap(Comparator<K> comparator, K key, V value) {
+        return ImmutableMap.<K, V>empty(comparator).put(key, value);
+    }
+
     public static <K extends Comparable<K>, V> ImmutableMap<K, V> empty() {
         return new WeightBalancedTreeMap<K, V>(Comparator.naturalOrder());
     }

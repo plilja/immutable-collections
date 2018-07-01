@@ -4,6 +4,27 @@ import se.plilja.imcollect.internal.fingertrees.FingerTreeList;
 
 public interface ImmutableList<T> extends ImmutableCollection<T> {
 
+    @Override
+    ImmutableList<T> add(T t);
+
+    @Override
+    default ImmutableList<T> addAll(Iterable<? extends T> values) {
+        return (ImmutableList<T>) ImmutableCollection.super.addAll(values);
+    }
+
+    @Override
+    ImmutableList<T> remove(T value);
+
+    @Override
+    default ImmutableList<T> removeAll(Iterable<? extends T> values) {
+        return (ImmutableList<T>) ImmutableCollection.super.removeAll(values);
+    }
+
+    @Override
+    default ImmutableList<T> retainAll(Iterable<? extends T> values) {
+        return (ImmutableList<T>) ImmutableCollection.super.retainAll(values);
+    }
+
     T get(int idx);
 
     ImmutableList<T> set(int idx, T value);
@@ -24,6 +45,15 @@ public interface ImmutableList<T> extends ImmutableCollection<T> {
 
     default boolean contains(T value) {
         return indexOf(value) != -1;
+    }
+
+    @SafeVarargs
+    public static <T> ImmutableList<T> of(T... ts) {
+        ImmutableList<T> r = empty();
+        for (T t : ts) {
+            r = r.add(t);
+        }
+        return r;
     }
 
     public static <T> ImmutableList<T> empty() {
