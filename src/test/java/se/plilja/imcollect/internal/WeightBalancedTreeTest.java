@@ -14,7 +14,7 @@ public class WeightBalancedTreeTest {
 
     @Property(trials = 500)
     public void treeShouldAlwaysBeConsistent(List<Operation> operations, List<@InRange(minInt = -50, maxInt = 50) Integer> values) {
-        WeightBalancedTree<Integer> target = new WeightBalancedTree<>(Integer::compare);
+        var target = new WeightBalancedTree<Integer>(Integer::compare);
 
         for (int i = 0; i < Integer.min(operations.size(), values.size()); i++) {
             switch (operations.get(i)) {

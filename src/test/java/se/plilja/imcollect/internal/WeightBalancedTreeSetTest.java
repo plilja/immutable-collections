@@ -17,7 +17,7 @@ public class WeightBalancedTreeSetTest extends CollectionsBaseTest {
 
     @Property
     public void lookupNullShouldAlwaysReturnEmpty(List<@InRange(minInt = -100, maxInt = 100) Integer> baseValues) {
-        WeightBalancedTreeSet<Integer> target = new WeightBalancedTreeSet<>(Integer::compare);
+        var target = new WeightBalancedTreeSet<Integer>(Integer::compare);
         target = target.addAll(baseValues);
 
         assertFalse(target.contains(null));
@@ -25,8 +25,8 @@ public class WeightBalancedTreeSetTest extends CollectionsBaseTest {
 
     @Property
     public void sizeShouldBeEqualToNumberOfUniqueAddedValues(List<Integer> values) {
-        WeightBalancedTreeSet<Integer> target = new WeightBalancedTreeSet<>(Integer::compare);
-        HashSet<Integer> uniqueValues = new HashSet<>(values);
+        var target = new WeightBalancedTreeSet<Integer>(Integer::compare);
+        var uniqueValues = new HashSet<Integer>(values);
         target = target.addAll(values);
         assertEquals(uniqueValues.size(), target.size());
     }

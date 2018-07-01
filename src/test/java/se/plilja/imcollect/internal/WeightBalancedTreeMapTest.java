@@ -6,7 +6,9 @@ import com.pholser.junit.quickcheck.runner.JUnitQuickcheck;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeMap;
 
 import static org.junit.Assert.*;
 
@@ -15,7 +17,7 @@ public class WeightBalancedTreeMapTest {
 
     @Test
     public void testLookup() {
-        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, String>(Integer::compare);
 
         // when
         for (int i = 0; i < 1000; i++) {
@@ -30,7 +32,7 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void testContains(List<@InRange(minInt = -100, maxInt = 100) Integer> values) {
-        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, String>(Integer::compare);
 
         // when
         for (Integer i : values) {
@@ -45,7 +47,7 @@ public class WeightBalancedTreeMapTest {
 
     @Test
     public void stressTest() {
-        WeightBalancedTreeMap<Integer, String> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, String>(Integer::compare);
 
         for (int i = 50000; i < 100000; i++) {
             target = target.put(i, String.format("foo %d", i));
@@ -59,7 +61,7 @@ public class WeightBalancedTreeMapTest {
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Test
     public void stressTestReferenceImplementation() {
-        TreeMap<Integer, String> target = new TreeMap<>();
+        var target = new TreeMap<Integer, String>();
 
         for (int i = 50000; i < 100000; i++) {
             target.put(i, String.format("foo %d", i));
@@ -72,16 +74,16 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void iterateValuesShouldBehaveAsReferenceImplementation(List<@InRange(minInt = -10, maxInt = 10) Integer> values) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
-        TreeMap<Integer, Integer> reference = new TreeMap<>();
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
+        var reference = new TreeMap<Integer, Integer>();
 
         for (int i : values) {
             target = target.put(i, i);
             reference.put(i, i);
         }
 
-        Iterator<Integer> targetIt = target.values().iterator();
-        Iterator<Integer> referenceIt = reference.values().iterator();
+        var targetIt = target.values().iterator();
+        var referenceIt = reference.values().iterator();
         while (targetIt.hasNext() && referenceIt.hasNext()) {
             int a = targetIt.next();
             int b = referenceIt.next();
@@ -93,16 +95,16 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void iterateKeysShouldBehaveAsReferenceImplementation(List<@InRange(minInt = -10, maxInt = 10) Integer> values) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
-        TreeMap<Integer, Integer> reference = new TreeMap<>();
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
+        var reference = new TreeMap<Integer, Integer>();
 
         for (int i : values) {
             target = target.put(i, i);
             reference.put(i, i);
         }
 
-        Iterator<Integer> targetIt = target.keys().iterator();
-        Iterator<Integer> referenceIt = reference.keySet().iterator();
+        var targetIt = target.keys().iterator();
+        var referenceIt = reference.keySet().iterator();
         while (targetIt.hasNext() && referenceIt.hasNext()) {
             int a = targetIt.next();
             int b = referenceIt.next();
@@ -114,7 +116,7 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void sizeShouldIncreaseWhenNewValuesAreAdded(List<@InRange(minInt = -10, maxInt = 10) Integer> values) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
 
         for (int i : values) {
             long expectedSize;
@@ -134,7 +136,7 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void removedValuesShouldNotBePresent(List<@InRange(minInt = -10, maxInt = 10) Integer> baseValues, List<@InRange(minInt = -10, maxInt = 10) Integer> toRemove) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, 2 * i);
         }
@@ -153,12 +155,12 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void putAllFromMutableMap(List<@InRange(minInt = -10, maxInt = 10) Integer> baseValues, List<@InRange(minInt = -10, maxInt = 10) Integer> toAdd) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, 2 * i);
         }
 
-        Map<Integer, Integer> addMap = new HashMap<>();
+        var addMap = new HashMap<Integer, Integer>();
         for (int i : toAdd) {
             addMap.put(i, 3 * i);
         }
@@ -178,12 +180,12 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void putAllFromImmutableMap(List<@InRange(minInt = -10, maxInt = 10) Integer> baseValues, List<@InRange(minInt = -10, maxInt = 10) Integer> toAdd) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, 2 * i);
         }
 
-        WeightBalancedTreeMap<Integer, Integer> addMap = new WeightBalancedTreeMap<>(Integer::compare);
+        var addMap = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : toAdd) {
             addMap = addMap.put(i, 3 * i);
         }
@@ -203,7 +205,7 @@ public class WeightBalancedTreeMapTest {
 
     @Property
     public void lookupNullShouldAlwaysReturnEmpty(List<Integer> baseValues) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, i);
         }
@@ -214,25 +216,25 @@ public class WeightBalancedTreeMapTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void insertNullKeyShouldFail() {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         target.put(null, 4711);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void insertNullValueShouldFail() {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         target.put(4711, null);
     }
 
     @Property
     public void removeNullShouldReturnTheExactSameInstance(List<Integer> baseValues) {
-        WeightBalancedTreeMap<Integer, Integer> target = new WeightBalancedTreeMap<>(Integer::compare);
+        var target = new WeightBalancedTreeMap<Integer, Integer>(Integer::compare);
         for (int i : baseValues) {
             target = target.put(i, i);
         }
 
         // when
-        WeightBalancedTreeMap<Integer, Integer> result = target.remove(null);
+        var result = target.remove(null);
 
         // then
         assertSame(result, target);

@@ -25,10 +25,10 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void removeExistingElementShouldDecreaseSize(List<@InRange(minInt = -10, maxInt = 10) Integer> baseCollection, int newValue) {
-        ImmutableCollection<Integer> target = empty.addAll(baseCollection);
+        var target = empty.addAll(baseCollection);
 
         // when
-        ImmutableCollection<Integer> withNewValue = target.add(newValue);
+        var withNewValue = target.add(newValue);
 
         // then
         assertTrue(withNewValue.contains(newValue));
@@ -38,10 +38,10 @@ public abstract class CollectionsBaseTest {
     public void removeExistingElementShouldDecreaseSize(List<@InRange(minInt = -10, maxInt = 10) Integer> values) {
         Assume.assumeFalse(values.isEmpty());
 
-        ImmutableCollection<Integer> target = empty.addAll(values);
+        var target = empty.addAll(values);
 
         // when
-        ImmutableCollection<Integer> result = target.remove(values.get(0));
+        var result = target.remove(values.get(0));
 
         // then
         assertEquals(target.size() - 1, result.size());
@@ -49,10 +49,10 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void removeAllShouldRemoveAllElements(List<@InRange(minInt = -10, maxInt = 10) Integer> base, List<@InRange(minInt = -10, maxInt = 10) Integer> toRemove) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.removeAll(toRemove);
+        var result = target.removeAll(toRemove);
 
         // then
         for (int i : toRemove) {
@@ -64,10 +64,10 @@ public abstract class CollectionsBaseTest {
     public void removeNonExistingElementShouldNotChangeSize(List<@InRange(minInt = -10, maxInt = 10) Integer> base, @InRange(minInt = -10, maxInt = 10) int toRemove) {
         Assume.assumeFalse(base.contains(toRemove));
 
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.remove(toRemove);
+        var result = target.remove(toRemove);
 
         // then
         assertEquals(target.size(), result.size());
@@ -75,10 +75,10 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void anAddedValueShouldBePresentInCollection(List<@InRange(minInt = -10, maxInt = 10) Integer> base, int newValue) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.add(newValue);
+        var result = target.add(newValue);
 
         // then
         assertTrue(result.contains(newValue));
@@ -86,13 +86,13 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void allAddedValueShouldBePresentInCollection(List<@InRange(minInt = -10, maxInt = 10) Integer> base, List<@InRange(minInt = -10, maxInt = 10) Integer> newValues) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.addAll(newValues);
+        var result = target.addAll(newValues);
 
         // then
-        for (int i : newValues) {
+        for (var i : newValues) {
             assertTrue(result.contains(i));
         }
         assertTrue(result.containsAll(newValues));
@@ -103,7 +103,7 @@ public abstract class CollectionsBaseTest {
         assert empty.isEmpty();
 
         // when
-        ImmutableCollection<Integer> result = empty.add(newValue);
+        var result = empty.add(newValue);
 
         // then
         assertFalse(result.isEmpty());
@@ -111,10 +111,10 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void retainAll(List<@InRange(minInt = -10, maxInt = 10) Integer> base, List<@InRange(minInt = -10, maxInt = 10) Integer> retainValues) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.retainAll(retainValues);
+        var result = target.retainAll(retainValues);
 
         // then
         for (int i = -10; i <= 10; i++) {
@@ -124,10 +124,10 @@ public abstract class CollectionsBaseTest {
 
     @Test
     public void testStream() {
-        ImmutableCollection<Integer> target = empty.addAll(asList(1, 3, 5, 7, 9));
+        var target = empty.addAll(asList(1, 3, 5, 7, 9));
 
         // when
-        List<Integer> result = target.stream()
+        var result = target.stream()
                 .sorted()
                 .map(i -> 2 * i)
                 .collect(toList());
@@ -138,10 +138,10 @@ public abstract class CollectionsBaseTest {
 
     @Test
     public void testParallelStream() {
-        ImmutableCollection<Integer> target = empty.addAll(asList(1, 3, 5, 7, 9));
+        var target = empty.addAll(asList(1, 3, 5, 7, 9));
 
         // when
-        List<Integer> result = target.parallelStream()
+        var result = target.parallelStream()
                 .sorted()
                 .map(i -> 2 * i)
                 .collect(toList());
@@ -162,21 +162,21 @@ public abstract class CollectionsBaseTest {
 
     @Property
     public void nullShouldNeverBePresent(List<Integer> base) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
         boolean res = target.contains(null);
 
         // then
-        assertEquals(false, res);
+        assertFalse(res);
     }
 
     @Property
     public void removingNullShouldReturnTheExactSameInstance(List<Integer> base) {
-        ImmutableCollection<Integer> target = empty.addAll(base);
+        var target = empty.addAll(base);
 
         // when
-        ImmutableCollection<Integer> result = target.remove(null);
+        var result = target.remove(null);
 
         // then
         assertSame(target, result);

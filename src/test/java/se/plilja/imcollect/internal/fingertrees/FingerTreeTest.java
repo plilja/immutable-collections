@@ -5,7 +5,6 @@ import com.pholser.junit.quickcheck.generator.InRange;
 import se.plilja.imcollect.internal.CollectionsBaseTest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.function.Consumer;
 import java.util.stream.IntStream;
@@ -21,11 +20,11 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void toMutableCollectionShouldReturnObjectEqualToArrayList(ArrayList<Integer> values) {
-        FingerTreeList<Integer> target = FingerTreeList.empty();
+        var target = FingerTreeList.<Integer>empty();
         target = target.addAll(values);
 
         // when
-        Collection<Integer> result = target.toMutableCollection();
+        var result = target.toMutableCollection();
 
         // then
         assertEquals(values, result);
@@ -33,7 +32,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void setFollowedByGetShouldYieldSetValue(@InRange(minInt = 0, maxInt = 10) int idx, int value) {
-        FingerTreeList<Integer> target = FingerTreeList.empty();
+        var target = FingerTreeList.<Integer>empty();
         for (int i = 0; i < 11; i++) {
             target = target.add(i);
         }
@@ -48,7 +47,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void accessingObjectWithIllegalIndexShouldYieldIndexOutOfBounds(List<Integer> values) {
-        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
+        var target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         // when, then
@@ -65,7 +64,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
     private void verifyCausesOutOfBounds(int idx, Consumer<Integer> actionThatShouldCauseOutOfBoundsException) {
         try {
             actionThatShouldCauseOutOfBoundsException.accept(idx);
-            assertTrue("Should have triggered IndexOutOfBoundsException before reaching here", false);
+            fail("Should have triggered IndexOutOfBoundsException before reaching here");
         } catch (IndexOutOfBoundsException ex) {
             // expected
         }
@@ -73,7 +72,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void getIndexOfShouldReturnValue(List<Integer> values) {
-        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
+        var target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         for (int value : values) {
@@ -84,7 +83,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void getLastIndexOfVsIndexOf(List<Integer> values) {
-        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
+        var target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         for (int value : values) {
@@ -102,7 +101,7 @@ public class FingerTreeTest extends CollectionsBaseTest {
 
     @Property
     public void indexOfShouldReturnMinusOneForNonExistingValue(List<@InRange(minInt = -1000, maxInt = -1) Integer> values, @InRange(minInt = 0, maxInt = 1000) Integer query) {
-        FingerTreeList<Integer> target = FingerTreeList.<Integer>empty()
+        var target = FingerTreeList.<Integer>empty()
                 .addAll(values);
 
         assertEquals(-1, target.indexOf(query));
